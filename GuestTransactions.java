@@ -2,33 +2,41 @@ import java.util.*;
 
 public class GuestTransactions {
     
-    private String roomType;
-    private int foodCost;
-    private int roomCost;
-    private String name;
-    private int roomNum;
-    public static ArrayList<String> guests = new ArrayList<String>();
+    // Instance Variables
 
-    public GuestTransactions(String initRoomType, int initFoodCost, String initName) {
+    private String roomType;
+    private String name;
+    private double foodCost;
+    private int roomCost;
+    private int roomNum;
+    private int nightsSpent;
+
+    // List of Guests
+
+    public static ArrayList<String> guestList = new ArrayList<String>();
+
+    // Constructor
+
+    public GuestTransactions(String initRoomType, String initName, int initNightsSpent) {
         name = initName;
-        guests.add(name);
+        nightsSpent = initNightsSpent;
+        guestList.add(name);
         roomType = initRoomType;
-        foodCost = initFoodCost;
         if (roomType.equalsIgnoreCase("suite")) {
             roomCost = 750;
-            roomNum = 400 + guests.indexOf(name);
+            roomNum = 400 + guestList.indexOf(name);
         }
         else if (roomType.equalsIgnoreCase("deluxe")) {
             roomCost = 400;
-            roomNum = 300 + guests.indexOf(name);
+            roomNum = 300 + guestList.indexOf(name);
         }
         else if (roomType.equalsIgnoreCase("double")) {
             roomCost = 250;
-            roomNum = 200 + guests.indexOf(name);
+            roomNum = 200 + guestList.indexOf(name);
         }
         else if (roomType.equalsIgnoreCase("single")) {
             roomCost = 50;
-            roomNum = 100 + guests.indexOf(name);
+            roomNum = 100 + guestList.indexOf(name);
         }
         else {
             roomCost = 0;
@@ -36,11 +44,13 @@ public class GuestTransactions {
         }
     }
 
+    // Get, Set, or Extra Methods
+
     public String getRoomType() {
         return roomType;
     }
 
-    public int getFoodCost() {
+    public double getFoodCost() {
         return foodCost;
     }
 
@@ -56,39 +66,63 @@ public class GuestTransactions {
         return roomNum;
     }
 
+    public double getPrice(String foodEaten) {
+        if (foodEaten.equalsIgnoreCase("Curry Chicken")) {
+            return 10.0;
+        }
+        else if (foodEaten.equalsIgnoreCase("Baked Fish")) {
+            return 30.0;
+        }
+        else if (foodEaten.equalsIgnoreCase("Mutton")) {
+            return 20.0;
+        }
+        else if (foodEaten.equalsIgnoreCase("Roast Turkey")) {
+            return 25.0;
+        }
+        else if (foodEaten.equalsIgnoreCase("Pudding")) {
+            return 15.0;
+        }
+        else {
+            return 0.0;
+        }
+
+    }
+
     public void changeRoom(String roomType) {
         if (roomType.equalsIgnoreCase("suite")) {
             roomCost = 750;
-            roomNum = 400 + guests.indexOf(getName());
+            roomNum = 400 + guestList.indexOf(getName());
         }
         else if (roomType.equalsIgnoreCase("deluxe")) {
             roomCost = 400;
-            roomNum = 300 + guests.indexOf(getName());
+            roomNum = 300 + guestList.indexOf(getName());
         }
         else if (roomType.equalsIgnoreCase("double")) {
             roomCost = 250;
-            roomNum = 200 + guests.indexOf(getName());
+            roomNum = 200 + guestList.indexOf(getName());
         }
         else if (roomType.equalsIgnoreCase("single")) {
             roomCost = 50;
-            roomNum = 100 + guests.indexOf(getName());
+            roomNum = 100 + guestList.indexOf(getName());
         }
         else {
             System.out.println("Invalid Room Type");
         }
     }
 
-    public static void main(String[] args) {
+    public void setFoodCost(String foodEaten) {
+        foodCost += getPrice(foodEaten);
+    }
 
-        GuestTransactions guest1 = new GuestTransactions("Suite", 250, "Joey");
-        System.out.println(guest1.getRoomNumber());
-        guest1.changeRoom("Deluxe");
-        System.out.println(guest1.getRoomNumber());
-        GuestTransactions guest2 = new GuestTransactions("Double", 150, "Jimmy");
-        System.out.println(guest2.getRoomNumber());
-        guest2.changeRoom("Deluxe");
-        System.out.println(guest2.getRoomNumber());
 
+    public double calculateDues() {
+        return (roomCost * nightsSpent) + (foodCost * 1.1);
+    }
+
+    // toString method
+
+    public String toString() {
+        return "Name: " + name + "\n   Room Type: " + roomType + "\n   Room Number: " + roomNum + "\n   Total Dues: $" + this.calculateDues() + "0";
     }
 
 }
